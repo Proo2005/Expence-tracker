@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import ExpenseForm from "./components/ExpenceForm";
+import ExpenseTable from "./components/ExpenceList";
 
-function App() {
+export interface Expense {
+  id: number;
+  date: string;
+  title: string;
+  credit: number;
+  debit: number;
+}
+
+const App: React.FC = () => {
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+
+  const addExpense = (expense: Expense) => {
+    setExpenses([expense, ...expenses]);
+  };
+
+  const deleteExpense = (id: number) => {
+    setExpenses(expenses.filter((exp) => exp.id !== id));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="layout">
+      <ExpenseForm onAdd={addExpense} />
+      <ExpenseTable items={expenses} onDelete={deleteExpense} />
     </div>
   );
-}
+};
 
 export default App;
